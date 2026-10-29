@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Maria Eduarda</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #1a0a14;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---------- TELA DE ESPERA ---------- */
+    #espera {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      background: radial-gradient(circle at center, #3a1030 0%, #1a0a14 70%);
+      z-index: 10;
+      transition: opacity 2s ease, visibility 2s ease;
+    }
+
+    #espera.some {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    #espera h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      font-weight: normal;
+    }
+
+    #espera p {
+      color: #f4b6c8;
+      margin-bottom: 30px;
+    }
+
+    .contador {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .caixa {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(244, 182, 200, 0.4);
+      border-radius: 12px;
+      padding: 15px 20px;
+      min-width: 80px;
+    }
+
+    .caixa span {
+      display: block;
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #ff7aa2;
+    }
+
+    .caixa small {
+      color: #f4b6c8;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .coracao {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      animation: bater 1.2s infinite;
+    }
+
+    @keyframes bater {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* ---------- SITE DE VERDADE ---------- */
+    #site {
+      opacity: 0;
+      transition: opacity 2s ease 1s;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    #site.aparece { opacity: 1; }
+
+    #site h1 {
+      font-size: 2rem;
+      color: #ff7aa2;
+      margin-bottom: 20px;
+    }
+
+    .foto {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 16px;
+      border: 4px solid #ff7aa2;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .tempo-juntos {
+      font-size: 1.2rem;
+      color: #f4b6c8;
+      margin: 20px 0 40px;
+    }
+
+    .linha-tempo {
+      text-align: left;
+      border-left: 3px solid #ff7aa2;
+      padding-left: 20px;
+      margin: 30px 0;
+    }
+
+    .momento { margin-bottom: 25px; }
+    .momento strong { color: #ff7aa2; }
+
+    .declaracao {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 25px;
+      line-height: 1.8;
+      font-style: italic;
+      margin-top: 40px;
+    }
+
+    .assinatura {
+      margin-top: 20px;
+      color: #ff7aa2;
+      font-style: normal;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TELA DE ESPERA -->
+  <div id="espera">
+    <div class="coracao">❤️</div>
+    <h1>Calma, Maria Eduarda... ainda não é a hora</h1>
+    <p>Seu presente abre à meia-noite do dia 22 de novembro</p>
+    <div class="contador">
+      <div class="caixa"><span id="dias">00</span><small>dias</small></div>
+      <div class="caixa"><span id="horas">00</span><small>horas</small></div>
+      <div class="caixa"><span id="minutos">00</span><small>minutos</small></div>
+      <div class="caixa"><span id="segundos">00</span><small>segundos</small></div>
+    </div>
+  </div>
+
+  <!-- SITE DE VERDADE -->
+  <div id="site">
+    <h1>Feliz 1 ano, Maria Eduarda! ❤️</h1>
+
+    <img class="foto" src="foto.jpg" alt="Nós dois">
+
+    <p class="tempo-juntos">Já estamos juntos há <strong id="juntos"></strong></p>
+
+    </div><div class="linha-tempo">
+  <div class="momento"><strong>22/10/2025</strong><br>O dia em que mandei a primeira mensagem pra você.</div>
+  <div class="momento"><strong>22/11/2025</strong><br>O dia em que te pedi em namoro. Foi ali que começou a nossa história, e o melhor ano da minha vida.</div>
+  <div class="momento"><strong>Nosso primeiro encontro</strong><br>O dia em que te levei pra sair pela primeira vez. Eu nem sabia se você gostava, mas comprei pastel e caldo de cana pensando em te ver sorrir. Foi simples, e foi perfeito.</div>
+  <div class="momento"><strong>22/11/2026</strong><br>Um ano ao seu lado.</div>
+</div>
+
+    <div class="declaracao">
+     <p>Oi, B.</p>
+
+<p>Eu queria te dizer que esse ano foi muito maravilhoso estar com você.</p>
+
+<p>Eu lembro que no começo eu pedia tanto para Deus uma mulher guerreira, uma mulher batalhadora, uma mulher que gostasse de mim de verdade. De verdade, que me apoiasse nas minhas decisões, nas minhas coisas. Eu queria uma companheira, e Deus colocou você no meu caminho.</p>
+
+<p>E mesmo a gente tendo se cruzado antes, não era o momento certo, não estava no tempo de Deus a gente se conhecer. Mas no momento certo, Ele colocou você no meu caminho, e eu sou muito grato por isso.</p>
+
+<p>Hoje a gente completa um ano de namoro. Mas logo eu quero estar completando um ano de casado, dois anos de casado, três anos de casado. Quero ter uma vida ao seu lado. Quero passar a minha vida com você e com Jesus.</p>
+
+<p>Eu te amo muito, Maria Eduarda.</p>
+      <div class="assinatura">Com amor, José</div>
+    </div>
+  </div>
+
+  <script>
+    // ===== DATA DO ANIVERSÁRIO =====
+    // Formato: ano, mês (0 a 11, onde novembro é 10), dia, hora, minuto
+    const dataAniversario = new Date(2026, 10, 22, 0, 0, 0);
+
+    // ===== LINHA DE TESTE =====
+    // Para testar, tire as duas barras do começo da linha abaixo.
+    // Ela faz a revelação acontecer 10 segundos depois de abrir a página.
+   // const dataAniversario = new Date(Date.now() + 10000);
+
+     //Data de início do namoro, usada no contador de tempo juntos
+    const inicioNamoro = new Date(2025, 10, 22, 0, 0, 0);
+
+    const espera = document.getElementById('espera');
+    const site = document.getElementById('site');
+
+    function dois(n) {
+      return String(n).padStart(2, '0');
+    }
+
+    function liberarSite() {
+      espera.classList.add('some');
+      site.classList.add('aparece');
+      atualizarTempoJuntos();
+      setInterval(atualizarTempoJuntos, 1000);
+    }
+
+    function atualizarTempoJuntos() {
+      const diff = Date.now() - inicioNamoro.getTime();
+      const dias = Math.floor(diff / 86400000);
+      const horas = Math.floor((diff % 86400000) / 3600000);
+      const minutos = Math.floor((diff % 3600000) / 60000);
+      const segundos = Math.floor((diff % 60000) / 1000);
+      document.getElementById('juntos').textContent =
+        dias + ' dias, ' + horas + ' horas, ' + minutos + ' minutos e ' + segundos + ' segundos';
+    }
+
+    let jaLiberou = false;
+
+    function atualizarContagem() {
+      const falta = dataAniversario.getTime() - Date.now();
+
+      if (falta <= 0) {
+        if (!jaLiberou) {
+          jaLiberou = true;
+          clearInterval(relogio);
+          liberarSite();
+        }
+        return;
+      }
+
+      document.getElementById('dias').textContent = dois(Math.floor(falta / 86400000));
+      document.getElementById('horas').textContent = dois(Math.floor((falta % 86400000) / 3600000));
+      document.getElementById('minutos').textContent = dois(Math.floor((falta % 3600000) / 60000));
+      document.getElementById('segundos').textContent = dois(Math.floor((falta % 60000) / 1000));
+    }
+
+    const relogio = setInterval(atualizarContagem, 1000);
+    atualizarContagem();
+  </script>
+
+</body>
+</html>
