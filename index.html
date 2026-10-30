@@ -38,13 +38,18 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      overflow-y: auto;
       text-align: center;
-      padding: 20px;
+      padding: 30px 20px;
       background: radial-gradient(circle at center, #3a1030 0%, #1a0a14 70%);
       z-index: 10;
       transition: opacity 2s ease, visibility 2s ease;
     }
+
+    /* centraliza quando sobra espaço, e deixa rolar quando não sobra */
+    #espera > :first-child { margin-top: auto; }
+    #espera > :last-child { margin-bottom: auto; }
 
     #espera.some {
       opacity: 0;
@@ -121,6 +126,78 @@
       pointer-events: none;
     }
 
+    /* ---------- GALERIA (22 FOTOS) ---------- */
+    .bloco-galeria {
+      width: 100%;
+      max-width: 620px;
+      margin: 45px auto 0;
+    }
+
+    .bloco-galeria h2 {
+      font-size: 1.3rem;
+      font-weight: normal;
+      color: #ff7aa2;
+      margin-bottom: 6px;
+    }
+
+    .bloco-galeria p {
+      color: #f4b6c8;
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+    }
+
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 10px;
+    }
+
+    .item-galeria {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(244, 182, 200, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #f4b6c8;
+    }
+
+
+    .item-galeria.liberada { cursor: pointer; border-color: #ff7aa2; }
+    .item-galeria.liberada img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* a foto mais recente brilha */
+    .item-galeria.nova { box-shadow: 0 0 14px 2px rgba(255, 122, 162, 0.7); }
+
+    /* Foto ampliada */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      background: rgba(10, 3, 8, 0.92);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    #lightbox.aberto { display: flex; }
+
+    #lightbox img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 14px;
+      border: 3px solid #ff7aa2;
+    }
+
+    #lightbox p { margin-top: 14px; color: #f4b6c8; }
+
     /* ---------- SITE DE VERDADE ---------- */
     #site {
       opacity: 0;
@@ -178,6 +255,40 @@
       color: #ff7aa2;
       font-style: normal;
     }
+
+    /* ---------- VERSÍCULO DO DIA (canto inferior) ---------- */
+    #versiculo {
+      position: fixed;
+      left: 15px;
+      bottom: 15px;
+      z-index: 15;
+      max-width: min(320px, calc(100vw - 30px));
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(244, 182, 200, 0.4);
+      background: rgba(26, 10, 20, 0.82);
+      backdrop-filter: blur(6px);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #fff;
+      text-align: left;
+    }
+
+    #versiculo .vers-texto { font-style: italic; }
+
+    #versiculo .vers-ref {
+      display: block;
+      margin-top: 6px;
+      color: #ff7aa2;
+      font-size: 0.8rem;
+    }
+
+    #versiculo .vers-titulo {
+      display: block;
+      margin-bottom: 6px;
+      color: #f4b6c8;
+      font-size: 0.75rem;
+    }
   </style>
 </head>
 <body>
@@ -185,6 +296,19 @@
   <!-- MÚSICA (em loop) -->
   <audio id="musica" src="musica.mp3" loop></audio>
   <button id="btn-musica" title="Ligar/desligar música">🔇</button>
+
+  <!-- FOTO AMPLIADA (toque para fechar) -->
+  <div id="lightbox">
+    <img id="lightbox-img" src="" alt="">
+    <p id="lightbox-legenda"></p>
+  </div>
+
+  <!-- VERSÍCULO DO DIA -->
+  <div id="versiculo">
+    <span class="vers-titulo">📖 Versículo do dia</span>
+    <span class="vers-texto" id="vers-texto"></span>
+    <span class="vers-ref" id="vers-ref"></span>
+  </div>
 
   <!-- TELA DE ESPERA -->
   <div id="espera">
@@ -198,6 +322,7 @@
       <div class="caixa"><span id="segundos">00</span><small>segundos</small></div>
     </div>
     <button id="btn-ouvir">🎵 Toque aqui para ouvir nossa música</button>
+
   </div>
 
   <!-- SITE DE VERDADE -->
@@ -213,6 +338,11 @@
       <div class="momento"><strong>22/11/2025</strong><br>O dia em que te pedi em namoro. Foi ali que começou a nossa história, e o melhor ano da minha vida.</div>
       <div class="momento"><strong>Nosso primeiro encontro</strong><br>O dia em que te levei pra sair pela primeira vez. Eu nem sabia se você gostava, mas comprei pastel e caldo de cana pensando em te ver sorrir. Foi simples, e foi perfeito.</div>
       <div class="momento"><strong>22/11/2026</strong><br>Um ano ao seu lado.</div>
+    </div>
+
+    <div class="bloco-galeria">
+      <h2>22 dias, 22 fotos</h2>
+      <div class="galeria" id="galeria-site"></div>
     </div>
 
     <div class="declaracao">
@@ -245,6 +375,23 @@
     // Data de início do namoro, usada no contador de tempo juntos
     const inicioNamoro = new Date(2025, 10, 22, 0, 0, 0);
 
+    // ===== GALERIA: 22 FOTOS, UMA POR DIA =====
+    // As fotos ficam na pasta "fotos" e se chamam 01.jpg, 02.jpg ... 22.jpg
+    const TOTAL_FOTOS = 22;
+
+    // Dia em que a foto 01 é liberada (mês 9 = outubro). Foto 22 sai em 21/11,
+    // e no dia 22/11 abre o site completo.
+    const PRIMEIRO_DIA = new Date(2026, 9, 31, 0, 0, 0);
+
+    // Legendas opcionais. Exemplo: 1: 'Nosso primeiro encontro',
+    const legendas = {
+      // 1: 'Nosso primeiro encontro',
+    };
+
+    // TESTE: coloque um número para "avançar" dias só na galeria. Ex: 5 libera 5 fotos a mais.
+    // Deixe 0 na versão final!
+    const DIAS_ADIANTADOS_TESTE = 0;
+
     const espera = document.getElementById('espera');
     const site = document.getElementById('site');
     const musica = document.getElementById('musica');
@@ -256,6 +403,120 @@
     function dois(n) {
       return String(n).padStart(2, '0');
     }
+
+    // ===== GALERIA =====
+    function agoraGaleria() {
+      return Date.now() + DIAS_ADIANTADOS_TESTE * 86400000;
+    }
+
+    function diaLiberacao(i) {
+      // o JavaScript ajusta sozinho a virada de mês (31/10 + 1 = 01/11)
+      return new Date(PRIMEIRO_DIA.getFullYear(), PRIMEIRO_DIA.getMonth(), PRIMEIRO_DIA.getDate() + i, 0, 0, 0);
+    }
+
+    function contarLiberadas() {
+      let qtd = 0;
+      for (let i = 0; i < TOTAL_FOTOS; i++) {
+        if (agoraGaleria() >= diaLiberacao(i).getTime()) qtd++;
+      }
+      return qtd;
+    }
+
+    function abrirFoto(src, legenda) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-legenda').textContent = legenda;
+      document.getElementById('lightbox').classList.add('aberto');
+    }
+
+    document.getElementById('lightbox').addEventListener('click', () => {
+      document.getElementById('lightbox').classList.remove('aberto');
+    });
+
+    function montarGaleria(idContainer, qtdLiberadas) {
+      const el = document.getElementById(idContainer);
+      el.innerHTML = '';
+
+      for (let i = 0; i < TOTAL_FOTOS; i++) {
+        const n = i + 1;
+        const item = document.createElement('div');
+
+        if (n <= qtdLiberadas) {
+          const src = 'fotos/' + dois(n) + '.jpg';
+          const legenda = legendas[n] || '';
+          item.className = 'item-galeria liberada' + (n === qtdLiberadas ? ' nova' : '');
+
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = legenda || 'Foto ' + n;
+          img.loading = 'lazy';
+          item.appendChild(img);
+          item.addEventListener('click', () => abrirFoto(src, legenda));
+        } else {
+          // foto ainda não liberada: não aparece nada e nem carrega o arquivo
+          continue;
+        }
+
+        el.appendChild(item);
+      }
+    }
+
+    let liberadasAntes = -1;
+
+    function atualizarGaleria() {
+      const qtd = contarLiberadas();
+      if (qtd === liberadasAntes) return;
+      liberadasAntes = qtd;
+
+      montarGaleria('galeria-site', qtd);
+    }
+
+    atualizarGaleria();
+    setInterval(atualizarGaleria, 30000); // vira o dia sozinha, sem recarregar
+
+    // ===== VERSÍCULO DO DIA =====
+    // Troca todo dia à meia-noite. Começa em 31/10 e usa um versículo por dia.
+    // Para trocar algum, edite o texto ou a referência. Se acabar a lista, recomeça do primeiro.
+    const versiculos = [
+      { t: 'O amor é paciente, o amor é bondoso. Não inveja, não se vangloria, não se orgulha.', r: '1 Coríntios 13:4' },
+      { t: 'Acima de tudo, revistam-se do amor, que é o vínculo da perfeição.', r: 'Colossenses 3:14' },
+      { t: 'Melhor é ter companhia do que estar sozinho, porque maior é a recompensa do trabalho de duas pessoas.', r: 'Eclesiastes 4:9' },
+      { t: 'Tudo o que fizerem, façam de todo o coração, como para o Senhor.', r: 'Colossenses 3:23' },
+      { t: 'Entregue o seu caminho ao Senhor; confie nele, e ele agirá.', r: 'Salmos 37:5' },
+      { t: 'O Senhor é o meu pastor; nada me faltará.', r: 'Salmos 23:1' },
+      { t: 'Há tempo certo para todas as coisas debaixo do céu.', r: 'Eclesiastes 3:1' },
+      { t: 'Amem-se uns aos outros com amor fraternal e procurem ultrapassar uns aos outros em honra.', r: 'Romanos 12:10' },
+      { t: 'Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente.', r: 'Efésios 4:32' },
+      { t: 'Porque eu sei os planos que tenho para vocês, planos de paz e não de mal, para dar a vocês um futuro e uma esperança.', r: 'Jeremias 29:11' },
+      { t: 'Confie no Senhor de todo o seu coração e não se apoie no seu próprio entendimento.', r: 'Provérbios 3:5' },
+      { t: 'O amor jamais acaba.', r: '1 Coríntios 13:8' },
+      { t: 'Suportem-se uns aos outros e perdoem-se mutuamente.', r: 'Colossenses 3:13' },
+      { t: 'Que o Senhor te abençoe e te guarde; que o Senhor faça resplandecer o seu rosto sobre ti.', r: 'Números 6:24-25' },
+      { t: 'Tudo posso naquele que me fortalece.', r: 'Filipenses 4:13' },
+      { t: 'Os que confiam no Senhor renovam as suas forças.', r: 'Isaías 40:31' },
+      { t: 'Acima de tudo, amem-se sinceramente uns aos outros, porque o amor perdoa muitíssimos pecados.', r: '1 Pedro 4:8' },
+      { t: 'Alegrem-se na esperança, sejam pacientes na tribulação, perseverem na oração.', r: 'Romanos 12:12' },
+      { t: 'Deus é amor. Quem permanece no amor permanece em Deus, e Deus nele.', r: '1 João 4:16' },
+      { t: 'Nós amamos porque ele nos amou primeiro.', r: '1 João 4:19' },
+      { t: 'Seja forte e corajoso. Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar.', r: 'Josué 1:9' },
+      { t: 'Agora, portanto, permanecem a fé, a esperança e o amor, estes três; porém o maior destes é o amor.', r: '1 Coríntios 13:13' }
+    ];
+
+    // Dia em que o primeiro versículo aparece (mês 9 = outubro)
+    const PRIMEIRO_VERSICULO = new Date(2026, 9, 31, 0, 0, 0);
+
+    function atualizarVersiculo() {
+      const hoje = new Date();
+      const inicioHoje = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+      // Math.round evita erro quando muda o horário de verão
+      let dias = Math.round((inicioHoje - PRIMEIRO_VERSICULO) / 86400000);
+      if (dias < 0) dias = 0; // antes do começo, mostra o primeiro
+      const v = versiculos[dias % versiculos.length];
+      document.getElementById('vers-texto').textContent = '“' + v.t + '”';
+      document.getElementById('vers-ref').textContent = v.r;
+    }
+
+    atualizarVersiculo();
+    setInterval(atualizarVersiculo, 60000); // troca sozinho na virada do dia
 
     // ===== MÚSICA =====
     function tocarMusica() {
